@@ -3,10 +3,10 @@ services:
    
     api:
         build:
-            context: ./app
+            context: ./eticketing
             dockerfile: Dockerfile
   
         ports:
             - "8000:8000"
         volumes:
-            - ./app:/home/app
+            - ./eticketing:/home/app
