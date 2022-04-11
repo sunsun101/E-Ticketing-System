@@ -4,7 +4,7 @@ services:
     web:
         image: 127.0.0.1:5000/E-Ticketing-System
         build:
-            context: ./eticketing
+            context: .
             dockerfile: Dockerfile
   
         ports:
