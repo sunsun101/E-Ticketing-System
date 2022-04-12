@@ -31,7 +31,7 @@ services:
         labels:
             - "traefik.http.routers.api.rule=PathPrefix(`/api`)" 
             - "traefik.http.routers.api.entrypoints=web"
-            - "traefik.http.services.api.loadbalancer.server.port=8000"        
+            - "traefik.http.services.api.loadbalancer.server.port=3200"        
      
 volumes: 
   eticketing-traefik-proxy:
