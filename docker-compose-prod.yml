@@ -26,7 +26,7 @@ services:
             dockerfile: Dockerfile
 
         labels:
-            - "traefik.http.routers.api.rule=PathPrefix(`/api`)" 
+            - "traefik.http.routers.api.rule=Host(`sad2a.cs.ait.ac.th,`www.sad2a.cs.ait.ac.th`,`sad2b.cs.ait.ac.th,`www.sad2b.cs.ait.ac.th`)"
             - "traefik.http.routers.api.entrypoints=web"
             - "traefik.http.services.api.loadbalancer.server.port=8000"        
 

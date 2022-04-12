@@ -1,0 +1,17 @@
+version: "3"
+
+services: 
+   
+    django:
+
+        image: localhost:5000/eticketing/django:1.0.0
+        deploy:  
+          replicas: 3
+
+          labels:
+            - "traefik.http.routers.api.rule=Host(`sad2a.cs.ait.ac.th,`www.sad2a.cs.ait.ac.th`,`sad2b.cs.ait.ac.th,`www.sad2b.cs.ait.ac.th`)"
+              - "traefik.http.routers.api.entrypoints=web"
+              - "traefik.http.services.api.loadbalancer.server.port=8000"     
+
+volumes: 
+  eticketing-swarm:
