@@ -24,6 +24,8 @@ services:
         build:
             context: ./eticketing
             dockerfile: Dockerfile
+        expose: 
+            - 8000
 
         labels:
             - "traefik.http.routers.api.rule=Host(`192.41.170.116,`192.41.170.117`)"
