@@ -4,12 +4,12 @@ services:
    
     django:
 
-        image: localhost:5000/eticketing/django:3.0.1
+        image: localhost:5000/eticketing/django:3.0.2
         deploy:  
           replicas: 3
 
           labels:
-              - "traefik.http.routers.api.rule=Host(`sad2-a.cs.ait.ac.th,`www.sad2-a.cs.ait.ac.th`,`sad2-b.cs.ait.ac.th,`www.sad2-b.cs.ait.ac.th`)"
+              - "traefik.http.routers.api.rule=Host(`192.41.170.116,`192.41.170.117`)"
               - "traefik.http.routers.api.entrypoints=web"
               - "traefik.http.services.api.loadbalancer.server.port=3200"     
 
