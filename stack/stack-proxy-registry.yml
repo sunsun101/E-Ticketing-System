@@ -1,34 +1,53 @@
 version: "3"
+
 services: 
 
     traefik:
+
         image: traefik:v2.3
-    
         ports:
             - "80:80"
             - "443:443"
+
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
 
+        deploy:
+            placement:
+              constraints:
+
+                - "node.role==manager"
+
         environment:
+
             - TRAEFIK_PROVIDERS_DOCKER=true
 
+            - TRAEFIK_PROVIDERS_DOCKER_SWARMMODE=true
 
             - TRAEFIK_ENTRYPOINTS_web=true
+
             - TRAEFIK_ENTRYPOINTS_web_ADDRESS=:80
 
             - TRAEFIK_ENTRYPOINTS_websecure=true
+
             - TRAEFIK_ENTRYPOINTS_websecure_ADDRESS=:443
 
-    web:
-        build:
-            context: ./eticketing
-            dockerfile: Dockerfile
+    registry:
 
-        labels:
-            - "traefik.http.routers.api.rule=PathPrefix(`/api`)" 
-            - "traefik.http.routers.api.entrypoints=web"
-            - "traefik.http.services.api.loadbalancer.server.port=8000"        
+        image: registry:2.8.0
 
-volumes: 
-  eticketing-traefik-proxy:
+        ports:
+
+          - "5000:5000"
+
+        volumes: 
+
+          - registry-volume:/var/lib/registry
+
+        deploy:
+            placement:
+              constraints:
+                - "node.hostname==swarm-1"
+
+volumes:
+  registry-volume:
