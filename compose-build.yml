@@ -1,7 +1,7 @@
 version: "3"
 services:    
     django:
-        image: localhost:5000/eticketing/django:3.0.2
+        image: localhost:5000/eticketing/django:3.0.3
         build:
             context: ./eticketing
             dockerfile: Dockerfile

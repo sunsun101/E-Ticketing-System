@@ -4,7 +4,7 @@ services:
    
     django:
 
-        image: localhost:5000/eticketing/django:3.0.2
+        image: localhost:5000/eticketing/django:3.0.3
         deploy:  
           replicas: 3
 

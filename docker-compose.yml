@@ -29,7 +29,7 @@ services:
             dockerfile: Dockerfile
 
         labels:
-            - "traefik.http.routers.api.rule=PathPrefix(`/api`)" 
+            - "traefik.http.routers.api.rule=Host(`192.41.170.116,`192.41.170.117`)"
             - "traefik.http.routers.api.entrypoints=web"
             - "traefik.http.services.api.loadbalancer.server.port=3200"        
      
