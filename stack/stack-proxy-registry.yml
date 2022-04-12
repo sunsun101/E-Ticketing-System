@@ -47,7 +47,7 @@ services:
         deploy:
             placement:
               constraints:
-                - "node.hostname==swarm-1"
+                - "node.hostname==sad2a"
 
 volumes:
   registry-volume:
