@@ -13,8 +13,8 @@ services:
       - 8020
     env_file:
       - eticketing/.env
-    # ports:
-    #   - "8001:8020"
+    ports:
+      - "8001:8020"
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
       - staticfiles:/app/staticfiles/
@@ -23,7 +23,7 @@ services:
       - "traefik.http.routers.django.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.django.tls=true"
       - "traefik.http.routers.django.tls.certresolver=letsencrypt"
-      - "traefik.http.services.django.loadbalancer.server.port=8020"
+      - "traefik.http.services.django.loadbalancer.server.port=8001"
   postgres_db:
     image: postgres
     restart: always
@@ -41,9 +41,13 @@ services:
     build:
       context: ./eticketing
       dockerfile: Dockerfile.traefik
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./traefik-public-certificates:/certificates"
