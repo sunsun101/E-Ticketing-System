@@ -9,8 +9,6 @@ services:
     image: eticketing:v1
     environment:
       - PORT=8020
-    expose:
-      - 8020
     env_file:
       - eticketing/.env
     ports:
