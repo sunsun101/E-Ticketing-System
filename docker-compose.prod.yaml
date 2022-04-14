@@ -18,7 +18,7 @@ services:
       - staticfiles:/app/staticfiles/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.django.rule=Host(`192.41.170.116`)"
+      - "traefik.http.routers.django.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.django.tls=true"
       - "traefik.http.routers.django.tls.certresolver=letsencrypt"
   postgres_db:
@@ -48,7 +48,7 @@ services:
       - "./traefik-public-certificates:/certificates"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`192.41.170.116`)"
+      - "traefik.http.routers.dashboard.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
       - "traefik.http.routers.dashboard.service=api@internal"
