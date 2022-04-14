@@ -9,10 +9,12 @@ services:
     image: eticketing:v1
     environment:
       - PORT=8020
+    expose:
+      - 8020
     env_file:
       - eticketing/.env
-    ports:
-      - "8001:8020"
+    # ports:
+    #   - "8001:8020"
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
       - staticfiles:/app/staticfiles/
@@ -51,8 +53,8 @@ services:
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
       - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$B3ObFSOk$$GyvQ1Ko08zKXNN0.32Lbf1"
+      # - "traefik.http.routers.dashboard.middlewares=auth"
+      # - "traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$B3ObFSOk$$GyvQ1Ko08zKXNN0.32Lbf1"
 
   # whoami:
   #   image: "traefik/whoami"
