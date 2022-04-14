@@ -36,14 +36,15 @@ services:
       - postgres_data:/var/lib/postgresql/data/
   traefik:
     container_name: "traefik"
-    env_file:
-      - eticketing/.env
     build:
       context: ./eticketing
       dockerfile: Dockerfile.traefik
+    command:
+      - "--log.level=DEBUG"
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./traefik-public-certificates:/certificates"
