@@ -5,3 +5,4 @@ django-dotenv
 psycopg2-binary
 django-storages
 boto3
+whitenoise==5.2.0
