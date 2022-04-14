@@ -1,11 +1,12 @@
-FROM python:3.9.7-buster
+FROM python:3.9.7-slim
 
-WORKDIR /home/app
+COPY . /app
+WORKDIR /app
 
-COPY requirements.txt requirements.txt
+RUN python3 -m venv /opt/venv
 
-RUN pip3 install -r requirements.txt
+RUN /opt/venv/bin/pip install pip --upgrade && \
+    /opt/venv/bin/pip install -r requirements.txt && \
+    chmod +x entrypoint.sh
 
-COPY . .
-
-CMD [ "python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["/app/entrypoint.sh"]
