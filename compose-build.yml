@@ -1,9 +1,0 @@
-version: "3"
-services:    
-    django:
-        image: localhost:5000/eticketing/django:3.0.4
-        build:
-            context: ./eticketing
-            dockerfile: Dockerfile
-        expose: 
-            - 8000
