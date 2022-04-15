@@ -24,7 +24,7 @@ services:
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.eticketing-secure.entrypoints=websecure"
       - "traefik.http.routers.eticketing-secure.rule=Host(`sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.services.django-service.loadbalancer.server.port=8001"
+      - "traefik.http.services.eticketing-secure.loadbalancer.server.port=8001"
   postgres_db:
     image: postgres
     restart: always
@@ -42,7 +42,6 @@ volumes:
   staticfiles:
       external: false
   postgres_data:
-  traefik-public-certificates:
 #   redis_data: 
 
 networks:
