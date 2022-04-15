@@ -21,8 +21,7 @@ services:
       - "traefik.http.routers.django.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.django.tls=true"
       - "traefik.http.routers.django.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.django.service=django-service"
-      - "traefik.http.services.django-service.loadbalancer.server.port=8001"
+      - "traefik.http.services.django.loadbalancer.server.port=8001"
   postgres_db:
     image: postgres
     restart: always
@@ -47,7 +46,6 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./traefik-public-certificates:/certificates"
     labels:
-      - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
