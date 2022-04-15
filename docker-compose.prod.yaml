@@ -7,12 +7,10 @@ services:
       context: ./eticketing
       dockerfile: Dockerfile
     image: eticketing:v1
-    environment:
-      - PORT=8020
     env_file:
       - eticketing/.env
-    ports:
-      - "8001:8020"
+    expose:
+      - 8000
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
       - staticfiles:/app/staticfiles/
@@ -21,8 +19,6 @@ services:
       - "traefik.http.routers.django.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.django.tls=true"
       - "traefik.http.routers.django.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.django.rule=PathPrefix(`/`)"
-      - "traefik.tcp.services.django.loadbalancer.server.port=8020"
   postgres_db:
     image: postgres
     restart: always
