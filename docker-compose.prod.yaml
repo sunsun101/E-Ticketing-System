@@ -10,7 +10,7 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443" # new
       - "--certificatesresolvers.myresolver.acme.tlschallenge=true" # new
-      - "--certificatesresolvers.myresolver.acme.email=your@email.com" # new
+      - "--certificatesresolvers.myresolver.acme.email=yst122331@ait.asia" # new
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json" # new
     ports:
       - "80:80"
