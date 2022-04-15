@@ -81,5 +81,5 @@ volumes:
   staticfiles:
       external: false
   postgres_data:
-  traefik-public-certificates:
+  # traefik-public-certificates:
 #   redis_data: 
