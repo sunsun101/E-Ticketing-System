@@ -12,7 +12,7 @@ services:
     env_file:
       - eticketing/.env
     ports:
-      - "8001:8020"
+      - "8020:8020"
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
       - staticfiles:/app/staticfiles/
@@ -24,7 +24,7 @@ services:
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.eticketing-secure.entrypoints=websecure"
       - "traefik.http.routers.eticketing-secure.rule=Host(`sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.services.eticketing-secure.loadbalancer.server.port=443"
+      - "traefik.http.services.eticketing-secure.loadbalancer.server.port=8020"
   postgres_db:
     image: postgres
     restart: always
