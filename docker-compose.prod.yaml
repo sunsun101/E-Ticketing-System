@@ -1,5 +1,20 @@
 version: "3.7"
 services:
+  traefik:
+        image: traefik:v2.3
+        ports:
+            - "80:80"
+            - "8080:8080"
+            - "443:443"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        environment:
+            - TRAEFIK_PROVIDERS_DOCKER=true
+            - TRAEFIK_ENTRYPOINTS_web=true
+            - TRAEFIK_ENTRYPOINTS_web_ADDRESS=:80
+            - TRAEFIK_ENTRYPOINTS_websecure=true
+            - TRAEFIK_ENTRYPOINTS_websecure_ADDRESS=:443
+            - TRAEFIK_API_INSECURE=true
   eticketing:
     depends_on:
       - postgres_db
@@ -16,15 +31,10 @@ services:
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
       - staticfiles:/app/staticfiles/
-    networks:
-      - proxy
-      - default
     labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
-      - "traefik.http.routers.eticketing-secure.entrypoints=websecure"
-      - "traefik.http.routers.eticketing-secure.rule=Host(`sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.services.eticketing-secure.loadbalancer.server.port=443"
+        - "traefik.http.routers.django.rule=PathPrefix(`/`)"
+        - "traefik.http.routers.django.entrypoints=web"
+        - "traefik.http.services.django.loadbalancer.server.port=80"
   postgres_db:
     image: postgres
     restart: always
@@ -43,7 +53,3 @@ volumes:
       external: false
   postgres_data:
 #   redis_data: 
-
-networks:
-  proxy:
-      external: true
