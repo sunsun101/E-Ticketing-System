@@ -4,7 +4,7 @@ services:
     image: "traefik:v2.6"
     command:
       #- "--log.level=DEBUG"
-      - "--api.insecure=true"
+      # - "--api.insecure=true"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
@@ -37,6 +37,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
+      - "traefik.http.services.eticketing.loadbalancer.server.port=8001" 
       - "traefik.http.routers.eticketing.entrypoints=web,websecure" # changed
       - "traefik.http.routers.eticketing.tls.certresolver=myresolver" # new
   postgres_db:
