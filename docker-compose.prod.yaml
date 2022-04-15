@@ -16,13 +16,14 @@ services:
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
       - staticfiles:/app/staticfiles/
+    networks:
+      - proxy
+      - default
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.django.rule=Host(`sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.routers.django.tls=true"
-      - "traefik.http.routers.django.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.django.service=django-service"
-      - "traefik.http.services.django-service.loadbalancer.server.port=8001"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.eticketing-secure.entrypoints=websecure"
+      - "traefik.http.routers.eticketing-secure.rule=Host(`sad2-a.cs.ait.ac.th`)"
   postgres_db:
     image: postgres
     restart: always
@@ -35,44 +36,6 @@ services:
       - "5434:5434"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-  traefik:
-    container_name: "traefik"
-    build:
-      context: ./eticketing
-      dockerfile: Dockerfile.traefik
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik-public-certificates:/certificates"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`traefik.sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.routers.dashboard.tls=true"
-      - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$B3ObFSOk$$GyvQ1Ko08zKXNN0.32Lbf1"
-
-  # whoami:
-  #   image: "traefik/whoami"
-  #   container_name: "simple-service"
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.whoami.rule=Host(`localhost`)"
-  #     - "traefik.http.routers.whoami.entrypoints=web"
-#   redis_db:
-#     image: redis
-#     restart: always
-#     expose:
-#       - 6388
-#     ports:
-#       - "6388:6388"
-#     volumes:
-#         - redis_data:/data
-#     entrypoint: redis-server --appendonly yes --port 6388
-
 
 volumes:
   staticfiles:
@@ -80,3 +43,7 @@ volumes:
   postgres_data:
   traefik-public-certificates:
 #   redis_data: 
+
+networks:
+  proxy:
+      external: true
