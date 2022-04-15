@@ -48,7 +48,7 @@ services:
       - "./traefik-public-certificates:/certificates"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dashboard.rule=Host(`sad2-a.cs.ait.ac.th`)"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.dashboard.tls=true"
       - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
       - "traefik.http.routers.dashboard.service=api@internal"
