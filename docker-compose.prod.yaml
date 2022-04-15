@@ -37,6 +37,7 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.services.eticketing.loadbalancer.server.port=8001"
       - "traefik.http.routers.eticketing.entrypoints=websecure"
   postgres_db:
