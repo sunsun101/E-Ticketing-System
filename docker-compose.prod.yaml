@@ -30,7 +30,7 @@ services:
       - eticketing/.env
     ports:
       - "8001:8020"
-    command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh && /app/collectstatic.sh"
+    command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
       - staticfiles:/app/staticfiles/
     networks:
@@ -39,6 +39,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.services.eticketing.loadbalancer.server.port=8001"
+      - "traefik.http.routers.eticketing.entrypoints=websecure"
       - "traefik.http.routers.eticketing.tls=true"
       - "traefik.http.routers.eticketing.tls.certresolver=letsencrypt"
   postgres_db:
