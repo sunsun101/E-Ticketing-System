@@ -22,8 +22,7 @@ services:
       - "traefik.http.routers.django.tls=true"
       - "traefik.http.routers.django.tls.certresolver=letsencrypt"
       - "traefik.http.routers.django.service=django-service"
-      - "traefik.http.services.django-service.loadbalancer.server.port=443"
-      - "traefik.http.services.django-service.loadbalancer.server.scheme=https"
+      - "traefik.http.services.django-service.loadbalancer.server.port=8001"
   postgres_db:
     image: postgres
     restart: always
