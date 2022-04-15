@@ -1,5 +1,29 @@
 version: "3.7"
 services:
+  traefik:
+    image: "traefik:v2.0"
+    container_name: "traefik"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web-secure.address=:443"
+      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
+      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=web-secure"
+      #- "--certificatesresolvers.myhttpchallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myhttpchallenge.acme.email=st122331@ait.asia"
+      - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
+    labels:
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
   eticketing:
     depends_on:
       - postgres_db
@@ -18,10 +42,9 @@ services:
       - staticfiles:/app/staticfiles/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.django.rule=Host(`sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.routers.django.tls=true"
-      - "traefik.http.routers.django.tls.certresolver=letsencrypt"
-      - "traefik.http.services.django.loadbalancer.server.port=8001"
+      - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
+      - "traefik.http.routers.eticketing.entrypoints=websecure"
+      - "traefik.http.routers.eticketing.tls.certresolver=myresolver"
   postgres_db:
     image: postgres
     restart: always
@@ -34,24 +57,6 @@ services:
       - "5434:5434"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-  traefik:
-    container_name: "traefik"
-    build:
-      context: ./eticketing
-      dockerfile: Dockerfile.traefik
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik-public-certificates:/certificates"
-    labels:
-      - "traefik.http.routers.dashboard.rule=Host(`traefik.sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.routers.dashboard.tls=true"
-      - "traefik.http.routers.dashboard.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.dashboard.service=api@internal"
-      - "traefik.http.routers.dashboard.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=testuser:$$apr1$$B3ObFSOk$$GyvQ1Ko08zKXNN0.32Lbf1"
 
   # whoami:
   #   image: "traefik/whoami"
