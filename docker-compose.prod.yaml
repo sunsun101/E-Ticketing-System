@@ -30,7 +30,7 @@ services:
       - eticketing/.env
     ports:
       - "8001:8020"
-    command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
+    command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh && /app/collectstatic.sh"
     volumes:
       - staticfiles:/app/staticfiles/
     networks:
