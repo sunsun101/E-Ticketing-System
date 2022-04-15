@@ -21,8 +21,7 @@ services:
       - "traefik.http.routers.django.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.django.tls=true"
       - "traefik.http.routers.django.tls.certresolver=letsencrypt"
-      - "traefik.port=8001"
-      - "traefik.http.services.django.loadbalancer.server.port=8001"
+      - "traefik.http.services.django.loadbalancer.server.port=80"
   postgres_db:
     image: postgres
     restart: always
