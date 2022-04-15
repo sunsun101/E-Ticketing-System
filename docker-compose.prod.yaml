@@ -36,7 +36,7 @@ services:
       - staticfiles:/app/staticfiles/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
+      - "traefik.http.routers.eticketing.rule=Host(`eticketing.sad2-a.cs.ait.ac.th`)"
       - "traefik.http.services.eticketing.loadbalancer.server.port=8001" 
       - "traefik.http.routers.eticketing.entrypoints=web,websecure" # changed
       - "traefik.http.routers.eticketing.tls.certresolver=myresolver" # new
