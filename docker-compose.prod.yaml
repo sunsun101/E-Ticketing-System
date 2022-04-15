@@ -23,7 +23,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.eticketing-secure.entrypoints=websecure"
-      - "traefik.http.services.eticketing-secure.loadbalancer.server.port=8020"
+      - "traefik.http.services.eticketing-secure.loadbalancer.server.port=443"
   postgres_db:
     image: postgres
     restart: always
