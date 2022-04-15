@@ -33,7 +33,7 @@ services:
         - "traefik.http.routers.django.rule=PathPrefix(`/`)"
         - "traefik.http.routers.django.tls=true"
         - "traefik.http.routers.django.tls.certresolver=letsencrypt"
-        - "traefik.http.services.django.loadbalancer.server.port=443"
+        - "traefik.http.services.django.loadbalancer.server.port=8020"
   postgres_db:
     image: postgres
     restart: always
