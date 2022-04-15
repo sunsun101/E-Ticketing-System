@@ -12,6 +12,9 @@
 
 [accessLog]
 
+[api]
+dashboard = true
+
 [providers]
   [providers.docker]
     exposedByDefault = false
