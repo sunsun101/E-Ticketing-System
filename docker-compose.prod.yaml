@@ -1,22 +1,23 @@
 version: "3.7"
 services:
   traefik:
-    image: "traefik:v2.0"
-    container_name: "traefik"
-    build:
-      context: ./eticketing
-      dockerfile: Dockerfile.traefik
-    labels:
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+    image: "traefik:v2.6"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443" # new
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true" # new
+      - "--certificatesresolvers.myresolver.acme.email=your@email.com" # new
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json" # new
     ports:
       - "80:80"
-      - "443:443"
-      - "8080:8080"
+      - "443:443" # new
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik-public-certificates:/certificates"
-    networks:
-      - proxy
+      - "./letsencrypt:/letsencrypt" # new
   eticketing:
     depends_on:
       - postgres_db
@@ -33,15 +34,11 @@ services:
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
       - staticfiles:/app/staticfiles/
-    networks:
-      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.services.eticketing.loadbalancer.server.port=8001"
-      - "traefik.http.routers.eticketing.entrypoints=websecure"
-      - "traefik.http.routers.eticketing.tls=true"
-      - "traefik.http.routers.eticketing.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.eticketing.entrypoints=web,websecure" # changed
+      - "traefik.http.routers.eticketing.tls.certresolver=myresolver" # new
   postgres_db:
     image: postgres
     restart: always
@@ -80,7 +77,3 @@ volumes:
   postgres_data:
   traefik-public-certificates:
 #   redis_data: 
-
-networks: 
-    proxy:
-      driver: bridge
