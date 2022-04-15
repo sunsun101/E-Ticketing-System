@@ -3,18 +3,9 @@ services:
   traefik:
     image: "traefik:v2.0"
     container_name: "traefik"
-    command:
-      - "--log.level=DEBUG"
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.web-secure.address=:443"
-      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge=true"
-      - "--certificatesresolvers.myhttpchallenge.acme.httpchallenge.entrypoint=web-secure"
-      - "--certificatesresolvers.myhttpchallenge.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
-      - "--certificatesresolvers.myhttpchallenge.acme.email=st122331@ait.asia"
-      - "--certificatesresolvers.myhttpchallenge.acme.storage=/letsencrypt/acme.json"
+    build:
+      context: ./eticketing
+      dockerfile: Dockerfile.traefik
     labels:
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
     ports:
@@ -22,8 +13,8 @@ services:
       - "443:443"
       - "8080:8080"
     volumes:
-      - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "./traefik-public-certificates:/certificates"
   eticketing:
     depends_on:
       - postgres_db
@@ -81,5 +72,5 @@ volumes:
   staticfiles:
       external: false
   postgres_data:
-  # traefik-public-certificates:
+  traefik-public-certificates:
 #   redis_data: 
