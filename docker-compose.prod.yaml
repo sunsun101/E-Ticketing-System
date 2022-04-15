@@ -7,10 +7,12 @@ services:
       context: ./eticketing
       dockerfile: Dockerfile
     image: eticketing:v1
+    environment:
+      - PORT=8020
     env_file:
       - eticketing/.env
-    expose:
-      - 8000
+    ports:
+      - "8001:8020"
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
       - staticfiles:/app/staticfiles/
