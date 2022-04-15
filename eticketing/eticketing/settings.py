@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 DEBUG = str(os.environ.get('DEBUG')) == "1"
 
 ENV_ALLOWED_HOST = os.environ.get("ENV_ALLOWED_HOST")
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['sad2-a.cs.ait.ac.th']
 # if ENV_ALLOWED_HOST:
 #     ALLOWED_HOSTS = [ ENV_ALLOWED_HOST ]
 
@@ -152,7 +152,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-SECURE_SSL_REDIRECT = False
+# SECURE_SSL_REDIRECT = False
+CSRF_COOKIE_SECURE = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
