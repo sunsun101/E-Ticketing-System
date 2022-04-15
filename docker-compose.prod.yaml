@@ -17,7 +17,6 @@ services:
     volumes:
       - staticfiles:/app/staticfiles/
     labels:
-      - "traefik.port=8001"
       - "traefik.enable=true"
       - "traefik.http.routers.django.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.django.tls=true"
