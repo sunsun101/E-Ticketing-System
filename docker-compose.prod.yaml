@@ -19,9 +19,10 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.django.rule=Host(`sad2-a.cs.ait.ac.th`)"
-      # - "traefik.http.routers.django.tls=true"
-      # - "traefik.http.routers.django.tls.certresolver=letsencrypt"
-      # - "traefik.http.routers.django.service=django-service"
+      - "traefik.port=8001"
+      - "traefik.http.routers.django.tls=true"
+      - "traefik.http.routers.django.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.django.service=django-service"
       - "traefik.http.services.django-service.loadbalancer.server.port=8001"
   postgres_db:
     image: postgres
@@ -40,16 +41,19 @@ services:
     build:
       context: ./eticketing
       dockerfile: Dockerfile.traefik
-    # command:
-    #   #- "--log.level=DEBUG"
-    #   - "--api.insecure=true"
+      command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
     ports:
       - "80:80"
       # - "443:443"
       - "8080:8080"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./traefik-public-certificates:/certificates"
+      # - "./traefik-public-certificates:/certificates"
     # labels:
     #   - "traefik.enable=true"
     #   - "traefik.http.routers.dashboard.rule=Host(`traefik.sad2-a.cs.ait.ac.th`)"
