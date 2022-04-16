@@ -22,10 +22,10 @@ services:
       - "8001:8020"
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
     volumes:
-      - staticfiles:/app/staticfiles/
+      - static:/app/static/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.eticketing.entrypoints=web,websecure"
+      - "traefik.http.routers.eticketing.entrypoints=web, websecure"
       - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
       - "traefik.http.routers.eticketing.tls=true"
       - "traefik.http.routers.eticketing.tls.certresolver=lets-encrypt"
@@ -48,6 +48,6 @@ services:
       - postgres_data:/var/lib/postgresql/data/
 
 volumes:
-  staticfiles:
+  static:
       external: false
   postgres_data:
