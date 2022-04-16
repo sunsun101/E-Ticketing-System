@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+from eticketing import eticketing
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -155,12 +157,16 @@ CSRF_COOKIE_SECURE = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-# STATIC_ROOT = BASE_DIR / 'static'
-STATIC_ROOT = os.path.join(BASE_DIR, 'eticketing/static')
+# STATIC_URL = 'static/'
+# # STATIC_ROOT = BASE_DIR / 'static'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'eticketing/static')
 
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.abspath(os.path.join(os.path.dirname(eticketing), 'static')) 
+STATICFILES_DIRS = (os.path.join('static'), )
 
 
 # Default primary key field type
