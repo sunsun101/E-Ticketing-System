@@ -1,23 +1,12 @@
-version: "3.7"
+version: "3"
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+
 services:
-  traefik:
-    image: "traefik:v2.6"
-    command:
-      #- "--log.level=DEBUG"
-      # - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
-      - "--entrypoints.websecure.address=:443" # new
-      - "--certificatesresolvers.myresolver.acme.tlschallenge=true" # new
-      - "--certificatesresolvers.myresolver.acme.email=yst122331@ait.asia" # new
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json" # new
-    ports:
-      - "80:80"
-      - "443:443" # new
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./letsencrypt:/letsencrypt" # new
   eticketing:
     depends_on:
       - postgres_db
@@ -36,10 +25,11 @@ services:
       - staticfiles:/app/staticfiles/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.eticketing.rule=Host(`eticketing.sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.services.eticketing.loadbalancer.server.port=8001" 
-      - "traefik.http.routers.eticketing.entrypoints=web,websecure" # changed
-      - "traefik.http.routers.eticketing.tls.certresolver=myresolver" # new
+      - "traefik.http.routers.eticketing.entrypoints=web"
+      - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
+    networks:
+      - internal
+      - web
   postgres_db:
     image: postgres
     restart: always
@@ -50,31 +40,12 @@ services:
       - 5434
     ports:
       - "5434:5434"
+    networks:
+      - internal
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-
-  # whoami:
-  #   image: "traefik/whoami"
-  #   container_name: "simple-service"
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.whoami.rule=Host(`localhost`)"
-  #     - "traefik.http.routers.whoami.entrypoints=web"
-#   redis_db:
-#     image: redis
-#     restart: always
-#     expose:
-#       - 6388
-#     ports:
-#       - "6388:6388"
-#     volumes:
-#         - redis_data:/data
-#     entrypoint: redis-server --appendonly yes --port 6388
-
 
 volumes:
   staticfiles:
       external: false
   postgres_data:
-  traefik-public-certificates:
-#   redis_data: 
