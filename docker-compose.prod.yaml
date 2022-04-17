@@ -1,11 +1,4 @@
 version: "3"
-
-networks:
-  web:
-    external: true
-  internal:
-    external: false
-
 services:
   eticketing:
     depends_on:
@@ -15,39 +8,30 @@ services:
       dockerfile: Dockerfile
     image: eticketing:v1
     environment:
-      - PORT=8020
+      - PORT=8000
     env_file:
       - eticketing/.env
     ports:
-      - "8001:8020"
+      - "8000:8000"
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
+    networks:
+      - traefik-public
     volumes:
       - static:/app/static/
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.eticketing.entrypoints=web, websecure"
-      - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
-      - "traefik.http.routers.eticketing.tls=true"
-      - "traefik.http.routers.eticketing.tls.certresolver=lets-encrypt"
-    networks:
-      - internal
-      - web
-  postgres_db:
-    image: postgres
-    restart: always
-    command: -p 5434
-    env_file:
-      - eticketing/.env
-    expose:
-      - 5434
-    ports:
-      - "5434:5434"
-    networks:
-      - internal
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
+        - "traefik.http.routers.eticketing.entrypoints=websecure"
+        - "traefik.http.routers.eticketing.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.eticketing.loadbalancer.server.port=80"
 
 volumes:
   static:
       external: false
-  postgres_data:
+networks:
+  traefik-public:
+    external: true
