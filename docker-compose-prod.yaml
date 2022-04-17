@@ -1,16 +1,12 @@
 version: "3"
 services:
   eticketing:
-    depends_on:
-      - postgres_db
     build:
       context: ./eticketing
       dockerfile: Dockerfile
-    image: eticketing:v1
+    image: 127.0.0.1:5000/eticketing
     environment:
       - PORT=8000
-    env_file:
-      - eticketing/.env
     ports:
       - "8000:8000"
     command: sh -c "chmod +x /app/migrate.sh && sh /app/migrate.sh && /app/entrypoint.sh"
