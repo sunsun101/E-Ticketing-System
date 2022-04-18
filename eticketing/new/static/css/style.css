@@ -192,7 +192,7 @@ figure {
   width: 100%;
   margin-top: -80px;
   z-index: 2;
-  /* color: #fff; */
+  color: #fff;
 }
 @media screen and (max-width: 768px) {
   .fh5co-cover .desc {
@@ -201,7 +201,7 @@ figure {
   }
 }
 .fh5co-cover .desc h2 {
-  /* color: #fff; */
+  color: #fff;
   font-size: 60px;
   margin-bottom: 10px;
   font-weight: 400 !important;
@@ -212,7 +212,7 @@ figure {
   }
 }
 .fh5co-cover .desc h3 {
-  /* color: #fff; */
+  color: #fff;
 }
 .fh5co-cover .desc p {
   display: block;
@@ -222,10 +222,10 @@ figure {
   color: rgba(255, 255, 255, 0.7);
 }
 .fh5co-cover .desc p a {
-  /* color: #fff; */
+  color: #fff;
 }
 .fh5co-cover .desc p a:hover, .fh5co-cover .desc p a:focus {
-  /* color: #fff !important; */
+  color: #fff !important;
 }
 .fh5co-cover .desc p a:hover.btn, .fh5co-cover .desc p a:focus.btn {
   border: 2px solid #fff !important;
