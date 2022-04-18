@@ -16,15 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import redirect
-from . import views
+import new.views as v
 
 urlpatterns = [
     path('', lambda request: redirect('accounts/login')),
     path('accounts/', include("django.contrib.auth.urls")),
-    path('home', views.home, name='home'),
-    path('flight', views.flight, name='flight'),
-    path('contact', views.contact, name='contact'),
-    path('signup', views.signup, name='signup'),
+    path('home', v.home, name='home'),
+    path('flight', v.flight, name='flight'),
+    path('contact', v.contact, name='contact'),
+    path('signup', v.signup, name='signup'),
     path('admin/', admin.site.urls, name='admin'),
-    path('search-flight', views.searchFlight, name='search-flight'),
+    # path('search-flight', v.searchFlight, name='search-flight')
 ]
