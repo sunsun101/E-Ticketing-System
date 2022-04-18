@@ -32,7 +32,7 @@
                                                 <td>{{q.flight.duration}} hr</td>
                                                 <td>{{q.departureTime}}</td>
                                                 <td>{{q.arrivalTime}}</td>
-                                                <td><input type="button" class="btn btn-primary btn-sm" value="Book Flight"></td>
+                                                <td><a  href="{% url 'book' %}" class="btn btn-primary btn-sm" style="padding-top: 1px; padding-bottom: 2px;">Book Flight</a></td>
                                               </tr>
                                             {% endfor %}
                                             </tbody>

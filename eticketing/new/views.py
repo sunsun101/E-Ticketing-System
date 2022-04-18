@@ -62,3 +62,6 @@ def signup(request):
 #     else:
 #         form = IndexForm()
 #     return render(request, 'index.html', {'form':form})    
+
+def book(request):
+    return render(request, 'booking.html')
