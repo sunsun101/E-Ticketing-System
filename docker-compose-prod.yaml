@@ -22,10 +22,11 @@ services:
           - node.role == manager
       labels:
         - "traefik.enable=true"
+        - "traefik.port=8000"
         - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`)"
         - "traefik.http.routers.eticketing.entrypoints=websecure"
         - "traefik.http.routers.eticketing.tls.certresolver=letsencryptresolver"
-        - "traefik.http.services.eticketing.loadbalancer.server.port=80"
+        - "traefik.http.services.eticketing.loadbalancer.server.port=8000"
 
 volumes:
   static:
