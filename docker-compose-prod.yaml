@@ -34,3 +34,5 @@ volumes:
 networks:
   traefik-public:
     external: true
+  pgcluster_network:
+    external: true
