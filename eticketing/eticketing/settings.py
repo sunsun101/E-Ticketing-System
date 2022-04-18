@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'eticketing'
+    'eticketing',
+    'new'
 ]
 
 MIDDLEWARE = [
@@ -83,43 +84,51 @@ WSGI_APPLICATION = 'eticketing.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dockerdc',
+        'USER': 'myuser',
+        'PASSWORD': 'mysecretpassword',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
 
-DB_USERNAME = os.environ.get("POSTGRES_USER")
-DB_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
-DB_DATABASE = os.environ.get("POSTGRES_DB")
-DB_HOST = os.environ.get("POSTGRES_HOST")
-DB_PORT = os.environ.get("POSTGRES_PORT")
-DB_IS_AVAIL = all([
-    DB_USERNAME,
-    DB_PASSWORD,
-    DB_DATABASE,
-    DB_HOST,
-    DB_PORT
-])
-DB_IGNORE_SSL=os.environ.get("DB_IGNORE_SSL") == "true"
-POSTGRES_READY = os.environ.get("POSTGRES_READY")
+# DB_USERNAME = os.environ.get("POSTGRES_USER")
+# DB_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+# DB_DATABASE = os.environ.get("POSTGRES_DB")
+# DB_HOST = os.environ.get("POSTGRES_HOST")
+# DB_PORT = os.environ.get("POSTGRES_PORT")
+# DB_IS_AVAIL = all([
+#     DB_USERNAME,
+#     DB_PASSWORD,
+#     DB_DATABASE,
+#     DB_HOST,
+#     DB_PORT
+# ])
+# DB_IGNORE_SSL=os.environ.get("DB_IGNORE_SSL") == "true"
+# POSTGRES_READY = os.environ.get("POSTGRES_READY")
 
-if DB_IS_AVAIL and POSTGRES_READY=='1':
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": DB_DATABASE,
-            "USER": DB_USERNAME,
-            "PASSWORD": DB_PASSWORD,
-            "HOST": DB_HOST,
-            "PORT": DB_PORT,
-        }
-    }
-    if not DB_IGNORE_SSL:
-         DATABASES["default"]["OPTIONS"] = {
-            "sslmode": "require"
-         }
+# if DB_IS_AVAIL and POSTGRES_READY=='1':
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.postgresql",
+#             "NAME": DB_DATABASE,
+#             "USER": DB_USERNAME,
+#             "PASSWORD": DB_PASSWORD,
+#             "HOST": DB_HOST,
+#             "PORT": DB_PORT,
+#         }
+#     }
+#     if not DB_IGNORE_SSL:
+#          DATABASES["default"]["OPTIONS"] = {
+#             "sslmode": "require"
+#          }
 
 
 # Password validation
@@ -166,3 +175,4 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGIN_REDIRECT_URL = "home"
