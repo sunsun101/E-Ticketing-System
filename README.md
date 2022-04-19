@@ -11,7 +11,7 @@ Contribution
 
 Sunsun - Server Setup, Database Design, Django application.
 Mufaddal - Server Setup with docker swarm, deployment handling.
-Vineela - Frontend design and django application.
+Vineela - Frontend design, database design, django application.
 
 Configurations:
 
