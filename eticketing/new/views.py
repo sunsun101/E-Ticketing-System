@@ -1,4 +1,7 @@
 from django.shortcuts import render
+import logging
+logger = logging.getLogger("signal")
+
 
 # Create your views here.
 from django.shortcuts import render, redirect
@@ -37,6 +40,10 @@ def contact(request):
     return render(request, 'contact.html')
 
 def flight(request):
+    message = {
+    'message' : "user visits index()"
+    }
+    logger.info(message)
     return render(request, 'flight.html')
 
 def signup(request):

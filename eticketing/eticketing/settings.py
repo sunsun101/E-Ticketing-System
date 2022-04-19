@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -137,6 +138,32 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+LOGGING = {
+ 'version': 1,
+ 'disable_existing_loggers': False,
+ 'formatters': {
+  'simple': {
+   'format': '[%(asctime)s] %(levelname)s | %(funcName)s | %(name)s | %(message)s',
+   'datefmt': '%Y-%m-%d %H:%M:%S',
+  },
+ },
+ 'handlers': {
+  'logger': {
+   'level': 'DEBUG',
+   'class': 'logging.handlers.RotatingFileHandler',
+   'filename': os.path.join(BASE_DIR, 'logs/test.log'),
+   'formatter': 'simple',
+  }
+ },
+ 'loggers': {
+  'signal': {
+   'handlers': ['logger'],
+   'level': 'DEBUG',
+  }
+ }
+}
 
 
 # Internationalization

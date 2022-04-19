@@ -27,7 +27,62 @@ services:
         - "traefik.http.routers.eticketing.entrypoints=websecure"
         - "traefik.http.routers.eticketing.tls.certresolver=letsencryptresolver"
         - "traefik.http.services.eticketing.loadbalancer.server.port=8000"
-
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.8.0
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    ports:
+      - 9200:9200
+      - 9300:9300
+    environment:
+      discovery.type: single-node
+    networks:
+      - efk
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.8.0
+    ports:
+      - 5601:5601
+    networks:
+      - efk
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - "traefik.enable=true"
+        - "traefik.port=5601"
+        - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`) && Path(`/kibana`)"
+        - "traefik.http.routers.eticketing.entrypoints=websecure"
+        - "traefik.http.routers.eticketing.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.eticketing.loadbalancer.server.port=5601"
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.8.0
+    user: root
+    command:
+      - "-e"
+      - "--strict.perms=false"
+    volumes: 
+       - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+       - ./eticketing/logs:/usr/share/filebeat/logs/
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    networks:
+      - efk
+    links:
+      - kibana
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
 volumes:
   static:
       external: false
@@ -36,3 +91,5 @@ networks:
     external: true
   pgcluster_network:
     external: true
+  efk:
+    driver: bridge
