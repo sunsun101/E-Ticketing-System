@@ -26,6 +26,8 @@ urlpatterns = [
     path('contact', v.contact, name='contact'),
     path('signup', v.signup, name='signup'),
     path('admin/', admin.site.urls, name='admin'),
-    path('booking', v.book, name='book'),
+    path('booking/<int:pk>/', v.book, name='book'),
+    path('manage_booking', v.manage_booking, name='manage_booking'),
     # path('search-flight', v.searchFlight, name='search-flight')
+    
 ]

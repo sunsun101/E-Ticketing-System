@@ -69,6 +69,7 @@
 				{% if user.is_authenticated %}
 				<li><a href="{% url 'logout' %}">Logout</a></li>
 				<li><a href="{% url 'home' %}">Flights</a></li>
+				<li><a href="{% url 'manage_booking' %}">My Bookings</a></li>
 				{% else %}
 				<li><a href="{% url 'login' %}">Login</a></li>
 				{% endif %}
