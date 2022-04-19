@@ -57,10 +57,10 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.port=5601"
-        - "traefik.http.routers.eticketing.rule=Host(`sad2-a.cs.ait.ac.th`) && Path(`/kibana`)"
-        - "traefik.http.routers.eticketing.entrypoints=websecure"
-        - "traefik.http.routers.eticketing.tls.certresolver=letsencryptresolver"
-        - "traefik.http.services.eticketing.loadbalancer.server.port=5601"
+        - "traefik.http.routers.kibana.rule=Host(`sad2-a.cs.ait.ac.th`) && Path(`/kibana`)"
+        - "traefik.http.routers.kibana.entrypoints=websecure"
+        - "traefik.http.routers.kibana.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.kibana.loadbalancer.server.port=5601"
   filebeat:
     image: docker.elastic.co/beats/filebeat:7.8.0
     user: root
