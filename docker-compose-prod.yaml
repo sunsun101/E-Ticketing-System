@@ -92,4 +92,4 @@ networks:
   pgcluster_network:
     external: true
   efk:
-    driver: bridge
+    external: true
