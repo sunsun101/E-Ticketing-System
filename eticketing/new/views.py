@@ -4,8 +4,11 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .forms import IndexForm
-from .models import Airport, FlightSchedule
+from .forms import IndexForm, BookingForm
+from .models import Airport, FlightSchedule, FlightReservation
+from datetime import datetime
+import random
+import string
 
 def home(request):
     print("in home view")
@@ -39,6 +42,11 @@ def contact(request):
 def flight(request):
     return render(request, 'flight.html')
 
+def manage_booking(request):
+    print(request.user.id)
+    queryset = FlightReservation.objects.filter(customer__id = request.user.id)
+    return render(request, 'manage_booking.html', {'queryset':queryset})
+
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -62,3 +70,29 @@ def signup(request):
 #     else:
 #         form = IndexForm()
 #     return render(request, 'index.html', {'form':form})    
+# reservationNumber = models.TextField()
+#     flightschedule = models.ForeignKey(FlightSchedule, on_delete=models.CASCADE)
+#     creationDate = models.DateField()
+#     reservationStatus = models.CharField(max_length=10, choices=RESERVATION_STATUS_CHOICES, default="PENDING")
+#     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+def book(request, pk=None):
+    if request.method == 'POST':
+        print("inside post method")
+        form = BookingForm(request.POST)
+        print(form.errors)
+        if form.is_valid():
+            print("inside valid")
+            no_adults = form.cleaned_data.get('no_adults')
+            no_children = form.cleaned_data.get('no_children')
+            reservationNumber = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
+            print(no_adults)
+            print(no_children)
+            print(reservationNumber)
+            print(request.user.id)
+            reservation = FlightReservation(reservationNumber = reservationNumber, flightschedule_id = pk, creationDate=datetime.today(), reservationStatus="CONFIRMED", customer_id=request.user.id)
+            # return redirect('home', {'queryset':queryset})
+            reservation.save()
+            return redirect('manage_booking')
+    else:
+        queryset = FlightSchedule.objects.get(id = pk)
+        return render(request, 'booking.html', {'queryset':queryset})

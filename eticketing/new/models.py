@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 
@@ -68,7 +69,7 @@ class FlightReservation(models.Model):
     flightschedule = models.ForeignKey(FlightSchedule, on_delete=models.CASCADE)
     creationDate = models.DateField()
     reservationStatus = models.CharField(max_length=10, choices=RESERVATION_STATUS_CHOICES, default="PENDING")
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.flightschedule.flight.flightNo
