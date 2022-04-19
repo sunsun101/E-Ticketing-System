@@ -41,7 +41,7 @@ def contact(request):
 
 def flight(request):
     message = {
-    'message' : "user visits index()"
+    'message' : "user visits fligh page"
     }
     logger.info(message)
     return render(request, 'flight.html')
